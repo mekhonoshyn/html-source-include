@@ -2,6 +2,7 @@
     "name": "html-source-include",
     "version": "1.0.0",
     "description": "",
+    "main": "dist/index.js",
     "scripts": {
         "eslint": "eslint src; exit 0",
         "build": "rm -rf dist && mkdir dist && babel src --out-dir dist"
