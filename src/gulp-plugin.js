@@ -4,7 +4,7 @@ import {transformSource} from './helper';
 
 export default htmlSourceIncludePlugin;
 
-const PLUGIN_NAME = 'gulp-html-source-include-plugin';
+const PLUGIN_NAME = 'gulp-html-source-include';
 
 function htmlSourceIncludePlugin() {
     return through2.obj(function (fileObject, encoding, callback) {
