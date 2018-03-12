@@ -19,7 +19,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = htmlSourceIncludePlugin;
 
 
-var PLUGIN_NAME = 'gulp-html-source-include-plugin';
+var PLUGIN_NAME = 'gulp-html-source-include';
 
 function htmlSourceIncludePlugin() {
     return _through2.default.obj(function (fileObject, encoding, callback) {
