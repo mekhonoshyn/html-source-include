@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _path = require('path');
+
+var _path2 = _interopRequireDefault(_path);
+
 var _through = require('through2');
 
 var _through2 = _interopRequireDefault(_through);
@@ -28,7 +32,7 @@ function htmlSourceIncludePlugin() {
         }
 
         try {
-            var content = (0, _helper.transformSource)(fileObject.path, fileObject.contents.toString());
+            var content = (0, _helper.transformSource)(_path2.default.parse(fileObject.path).dir, fileObject.contents.toString());
 
             fileObject.contents = Buffer.from(content);
 

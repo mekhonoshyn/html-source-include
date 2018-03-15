@@ -1,3 +1,4 @@
+import path from 'path';
 import through2 from 'through2';
 import PluginError from 'plugin-error';
 import {transformSource} from './helper';
@@ -13,7 +14,7 @@ function htmlSourceIncludePlugin() {
         }
 
         try {
-            const content = transformSource(fileObject.path, fileObject.contents.toString());
+            const content = transformSource(path.parse(fileObject.path).dir, fileObject.contents.toString());
 
             fileObject.contents = Buffer.from(content);
 
