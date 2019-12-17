@@ -17,7 +17,7 @@ var _path2 = _interopRequireDefault(_path);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var INCLUSION_REGEXP = /<include src="((?:[\w/.-]+))"><\/include>/g;
+var INCLUSION_REGEXP = /([^\n]*)<include src="((?:[\w/.-]+))"><\/include>/g;
 
 exports.transformSource = transformSource;
 
@@ -40,11 +40,12 @@ function getInclusions(source) {
 
     while ((match = INCLUSION_REGEXP.exec(source)) && match) {
         var _match = match,
-            _match2 = _slicedToArray(_match, 2),
+            _match2 = _slicedToArray(_match, 3),
             placeholder = _match2[0],
-            relativePath = _match2[1];
+            indentation = _match2[1],
+            relativePath = _match2[2];
 
-        inclusions.push({ placeholder: placeholder, relativePath: relativePath });
+        inclusions.push({ placeholder: placeholder, indentation: indentation, relativePath: relativePath });
     }
 
     return inclusions;
@@ -59,7 +60,9 @@ function getFilePath(context, inclusion) {
 function getFileContent(inclusion) {
     var context = _path2.default.parse(inclusion.absolutePath).dir;
     var fileContent = readFileSync(inclusion.absolutePath);
-    var transformedFileContent = transformSource(context, fileContent);
+    var transformedFileContent = transformSource(context, fileContent).split(/\n/).map(function (lineContent) {
+        return '' + inclusion.indentation + lineContent;
+    }).join('\n');
 
     Object.assign(inclusion, { fileContent: transformedFileContent });
 }

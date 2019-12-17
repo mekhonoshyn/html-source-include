@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const INCLUSION_REGEXP = /<include src="((?:[\w/.-]+))"><\/include>/g;
+const INCLUSION_REGEXP = /([^\n]*)<include src="((?:[\w/.-]+))"><\/include>/g;
 
 export {transformSource};
 
@@ -20,9 +20,9 @@ function getInclusions(source) {
     const inclusions = [];
 
     while ((match = INCLUSION_REGEXP.exec(source)) && match) {
-        const [placeholder, relativePath] = match;
+        const [placeholder, indentation, relativePath] = match;
 
-        inclusions.push({placeholder, relativePath});
+        inclusions.push({placeholder, indentation, relativePath});
     }
 
     return inclusions;
@@ -37,7 +37,7 @@ function getFilePath(context, inclusion) {
 function getFileContent(inclusion) {
     const context = path.parse(inclusion.absolutePath).dir;
     const fileContent = readFileSync(inclusion.absolutePath);
-    const transformedFileContent = transformSource(context, fileContent);
+    const transformedFileContent = transformSource(context, fileContent).split(/\n/).map((lineContent) => `${inclusion.indentation}${lineContent}`).join('\n');
 
     Object.assign(inclusion, {fileContent: transformedFileContent});
 }
